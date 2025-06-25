@@ -1,93 +1,87 @@
-import React, { useState } from "react";
-import NavBar from "../components/Navbar/NavBar";
-import Footer from "../components/Footer";
-import { useDocTitle } from "../components/CustomHook";
-import axios from "axios";
-// import emailjs from 'emailjs-com';
-import Notiflix from "notiflix";
+"use client"
+
+import { useState } from "react"
+import NavBar from "../components/Navbar/NavBar"
+import Footer from "../components/Footer"
+import { useDocTitle } from "../components/CustomHook"
+import axios from "axios"
+import Notiflix from "notiflix"
+import { useAppContext } from "../context/AppContext"
 
 const Contact = () => {
-  useDocTitle("MLD | Molad e Konsult - Send us a message");
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
-  const [message, setMessage] = useState("");
-  const [errors, setErrors] = useState([]);
+  const { pageTitles, forms, company, social, api } = useAppContext()
+
+  useDocTitle(pageTitles.contact)
+  const [firstName, setFirstName] = useState("")
+  const [lastName, setLastName] = useState("")
+  const [email, setEmail] = useState("")
+  const [phone, setPhone] = useState("")
+  const [message, setMessage] = useState("")
+  const [errors, setErrors] = useState([])
 
   const clearErrors = () => {
-    setErrors([]);
-  };
+    setErrors([])
+  }
 
   const clearInput = () => {
-    setFirstName("");
-    setLastName("");
-    setEmail("");
-    setPhone("");
-    setMessage("");
-  };
+    setFirstName("")
+    setLastName("")
+    setEmail("")
+    setPhone("")
+    setMessage("")
+  }
 
   const sendEmail = (e) => {
-    e.preventDefault();
-    document.getElementById("submitBtn").disabled = true;
-    document.getElementById("submitBtn").innerHTML = "Loading...";
-    let fData = new FormData();
-    fData.append("first_name", firstName);
-    fData.append("last_name", lastName);
-    fData.append("email", email);
-    fData.append("phone_number", phone);
-    fData.append("message", message);
+    e.preventDefault()
+    document.getElementById("submitBtn").disabled = true
+    document.getElementById("submitBtn").innerHTML = forms.contact.loadingText
+    const fData = new FormData()
+    fData.append("first_name", firstName)
+    fData.append("last_name", lastName)
+    fData.append("email", email)
+    fData.append("phone_number", phone)
+    fData.append("message", message)
 
     axios({
       method: "post",
-      url: process.env.REACT_APP_CONTACT_API,
+      url: api.contact,
       data: fData,
       headers: {
         "Content-Type": "multipart/form-data",
       },
     })
-      .then(function (response) {
-        document.getElementById("submitBtn").disabled = false;
-        document.getElementById("submitBtn").innerHTML = "send message";
-        clearInput();
+      .then((response) => {
+        document.getElementById("submitBtn").disabled = false
+        document.getElementById("submitBtn").innerHTML = forms.contact.submitText.toLowerCase()
+        clearInput()
         //handle success
-        Notiflix.Report.success("Success", response.data.message, "Okay");
+        Notiflix.Report.success("Success", response.data.message, "Okay")
       })
-      .catch(function (error) {
-        document.getElementById("submitBtn").disabled = false;
-        document.getElementById("submitBtn").innerHTML = "send message";
+      .catch((error) => {
+        document.getElementById("submitBtn").disabled = false
+        document.getElementById("submitBtn").innerHTML = forms.contact.submitText.toLowerCase()
         //handle error
-        const { response } = error;
+        const { response } = error
         if (response.status === 500) {
-          Notiflix.Report.failure(
-            "An error occurred",
-            response.data.message,
-            "Okay"
-          );
+          Notiflix.Report.failure("An error occurred", response.data.message, "Okay")
         }
         if (response.data.errors !== null) {
-          setErrors(response.data.errors);
+          setErrors(response.data.errors)
         }
-      });
-  };
+      })
+  }
   return (
     <>
       <div>
         <NavBar />
       </div>
-      <div
-        id="contact"
-        className="flex justify-center items-center mt-8 w-full bg-white py-12 lg:py-24 "
-      >
-        <div
-          className="container mx-auto my-8 px-4 lg:px-20"
-          data-aos="zoom-in"
-        >
+      <div id="contact" className="flex justify-center items-center mt-8 w-full bg-white py-12 lg:py-24 ">
+        <div className="container mx-auto my-8 px-4 lg:px-20" data-aos="zoom-in">
           <form onSubmit={sendEmail}>
             <div className="w-full bg-white p-8 my-4 md:px-12 lg:w-9/12 lg:pl-20 lg:pr-40 mr-auto rounded-2xl shadow-2xl">
               <div className="flex">
                 <h1 className="font-bold text-center lg:text-left text-primary uppercase text-4xl">
-                  Send us a message
+                  {forms.contact.title}
                 </h1>
               </div>
               <div className="grid grid-cols-1 gap-5 md:grid-cols-2 mt-5">
@@ -96,14 +90,12 @@ const Contact = () => {
                     name="first_name"
                     className="w-full bg-gray-100 text-gray-900 mt-2 p-3 rounded-lg focus:outline-none focus:shadow-outline"
                     type="text"
-                    placeholder="First Name*"
+                    placeholder={forms.contact.fields[0].placeholder}
                     value={firstName}
                     onChange={(e) => setFirstName(e.target.value)}
                     onKeyUp={clearErrors}
                   />
-                  {errors && (
-                    <p className="text-red-500 text-sm">{errors.first_name}</p>
-                  )}
+                  {errors && <p className="text-red-500 text-sm">{errors.first_name}</p>}
                 </div>
 
                 <div>
@@ -111,14 +103,12 @@ const Contact = () => {
                     name="last_name"
                     className="w-full bg-gray-100 text-gray-900 mt-2 p-3 rounded-lg focus:outline-none focus:shadow-outline"
                     type="text"
-                    placeholder="Last Name*"
+                    placeholder={forms.contact.fields[1].placeholder}
                     value={lastName}
                     onChange={(e) => setLastName(e.target.value)}
                     onKeyUp={clearErrors}
                   />
-                  {errors && (
-                    <p className="text-red-500 text-sm">{errors.last_name}</p>
-                  )}
+                  {errors && <p className="text-red-500 text-sm">{errors.last_name}</p>}
                 </div>
 
                 <div>
@@ -126,14 +116,12 @@ const Contact = () => {
                     name="email"
                     className="w-full bg-gray-100 text-gray-900 mt-2 p-3 rounded-lg focus:outline-none focus:shadow-outline"
                     type="email"
-                    placeholder="Email*"
+                    placeholder={forms.contact.fields[2].placeholder}
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     onKeyUp={clearErrors}
                   />
-                  {errors && (
-                    <p className="text-red-500 text-sm">{errors.email}</p>
-                  )}
+                  {errors && <p className="text-red-500 text-sm">{errors.email}</p>}
                 </div>
 
                 <div>
@@ -141,30 +129,24 @@ const Contact = () => {
                     name="phone_number"
                     className="w-full bg-gray-100 text-gray-900 mt-2 p-3 rounded-lg focus:outline-none focus:shadow-outline"
                     type="number"
-                    placeholder="Phone*"
+                    placeholder={forms.contact.fields[3].placeholder}
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
                     onKeyUp={clearErrors}
                   />
-                  {errors && (
-                    <p className="text-red-500 text-sm">
-                      {errors.phone_number}
-                    </p>
-                  )}
+                  {errors && <p className="text-red-500 text-sm">{errors.phone_number}</p>}
                 </div>
               </div>
               <div className="my-4">
                 <textarea
                   name="message"
-                  placeholder="Message*"
+                  placeholder={forms.contact.fields[4].placeholder}
                   className="w-full h-32 bg-gray-100 text-gray-900 mt-2 p-3 rounded-lg focus:outline-none focus:shadow-outline"
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
                   onKeyUp={clearErrors}
                 ></textarea>
-                {errors && (
-                  <p className="text-red-500 text-sm">{errors.message}</p>
-                )}
+                {errors && <p className="text-red-500 text-sm">{errors.message}</p>}
               </div>
               <div className="my-2 w-1/2 lg:w-2/4">
                 <button
@@ -173,7 +155,7 @@ const Contact = () => {
                   className="uppercase text-sm font-bold tracking-wide bg-gray-500 hover:bg-primary text-gray-100 p-3 rounded-lg w-full 
                                     focus:outline-none focus:shadow-outline"
                 >
-                  Send Message
+                  {forms.contact.submitText}
                 </button>
               </div>
             </div>
@@ -186,7 +168,7 @@ const Contact = () => {
                 </div>
                 <div className="flex flex-col">
                   <h2 className="text-2xl">Office Address</h2>
-                  <p className="text-secondary-light">Ilo Awela, Ota, Ogun State</p>
+                  <p className="text-secondary-light">{company.address.full}</p>
                 </div>
               </div>
 
@@ -197,18 +179,18 @@ const Contact = () => {
 
                 <div className="flex flex-col">
                   <h2 className="text-2xl">Call Us</h2>
-                  <p className="text-secondary-light">Tel: 08055384406</p>
+                  <p className="text-secondary-light">Tel: {company.phoneAlt}</p>
 
                   <div className="mt-5">
                     <h2 className="text-2xl">Send an E-mail</h2>
-                    <p className="text-secondary-light">info@mld.ng</p>
+                    <p className="text-secondary-light">{company.emailAlt}</p>
                   </div>
                 </div>
               </div>
 
               <div className="flex my-4 w-2/3 lg:w-1/2">
                 <a
-                  href="https://www.facebook.com/ENLIGHTENEERING/"
+                  href={social.facebook}
                   target="_blank"
                   rel="noreferrer"
                   className="rounded-full flex justify-center bg-white h-8 text-primary  w-8  mx-1 text-center pt-1"
@@ -224,7 +206,7 @@ const Contact = () => {
                   </svg>
                 </a>
                 <a
-                  href="https://www.linkedin.com/company/enlighteneering-inc-"
+                  href={social.linkedin}
                   target="_blank"
                   rel="noreferrer"
                   className="rounded-full flex justify-center bg-white h-8 text-primary  w-8  mx-1 text-center pt-1"
@@ -247,7 +229,7 @@ const Contact = () => {
       </div>
       <Footer />
     </>
-  );
-};
+  )
+}
 
-export default Contact;
+export default Contact

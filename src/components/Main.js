@@ -1,9 +1,11 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import NavBar from "./Navbar/NavBar";
-import { companyName } from "../utilities/Constants";
-import img from "../images/web-dev.svg";
+import { Link } from "react-router-dom"
+import NavBar from "./Navbar/NavBar"
+import { useAppContext } from "../context/AppContext"
+import img from "../images/web-dev.svg"
+
 const Main = () => {
+  const { company, content, images } = useAppContext()
+
   return (
     <div className=" bg-gradient-to-br from-black/90  via-slate-800 to-black/90 relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-radial from-transparent via-green-900/10 to-black/50"></div>
@@ -18,33 +20,19 @@ const Main = () => {
             <NavBar />
           </div>
 
-          <div
-            className="m-auto overflow-hidden mx-4 mt-8 lg:mt-4 p-2 md:p-12 h-5/6"
-            data-aos="zoom-in"
-          >
-            <div
-              id="hero"
-              className="flex flex-col lg:flex-row py-8 justify-between text-center lg:text-left"
-            >
-              <div
-                className="lg:w-1/2 flex flex-col justify-center"
-                data-aos="zoom-in"
-                data-aos-delay="200"
-              >
+          <div className="m-auto overflow-hidden mx-4 mt-8 lg:mt-4 p-2 md:p-12 h-5/6" data-aos="zoom-in">
+            <div id="hero" className="flex flex-col lg:flex-row py-8 justify-between text-center lg:text-left">
+              <div className="lg:w-1/2 flex flex-col justify-center" data-aos="zoom-in" data-aos-delay="200">
                 <h1 className="mb-5 md:text-5xl text-3xl font-bold text-primary tracking-tight">
-                  {/* We build digital solutions to help businesses scale */}
-                  Effortless Ordering, Powered by AI
+                  {content.hero.title}
                 </h1>
-                <div className="text-xl font-semibold tracking-tight mb-5 text-gray-500">
-                  Welcome to {companyName}: Your Smart Ordering Solution on
-                  WhatsApp
-                </div>
+                <div className="text-xl font-semibold tracking-tight mb-5 text-gray-500">{content.hero.subtitle}</div>
                 <div className="mb-10 space-x-0 md:space-x-2 md:mb-16">
                   <Link
                     to="/contact"
                     className="text-white bg-primary inline-flex items-center justify-center w-full px-6 py-3 my-4 text-lg shadow-xl rounded-2xl sm:w-auto sm:mb-0"
                   >
-                    Learn more
+                    {content.hero.cta}
                     <svg
                       className="w-4 h-4 ml-1"
                       xmlns="http://www.w3.org/2000/svg"
@@ -61,17 +49,11 @@ const Main = () => {
                 </div>
               </div>
 
-              <div
-                className="flex lg:justify-end w-full lg:w-1/2"
-                data-aos="fade-up"
-                data-aos-delay="700"
-              >
+              <div className="flex lg:justify-end w-full lg:w-1/2" data-aos="fade-up" data-aos-delay="700">
                 <img
                   alt="card img"
                   className="rounded-t float-right duration-1000 w-full"
-                  // style={{ height: "450px", width: "auto" }}
-                  // src="/images/landing_image.jpg"
-                  src={img}
+                  src={img || "/placeholder.svg"}
                 />
               </div>
             </div>
@@ -79,7 +61,7 @@ const Main = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Main;
+export default Main

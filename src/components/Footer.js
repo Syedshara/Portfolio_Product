@@ -1,37 +1,17 @@
-import {
-  Facebook,
-  Twitter,
-  Linkedin,
-  Instagram,
-  Mail,
-  Phone,
-  MapPin,
-  Briefcase,
-} from "lucide-react";
+import { Facebook, Twitter, Linkedin, Instagram, Mail, Phone, MapPin, Briefcase } from "lucide-react"
+import { useAppContext } from "../context/AppContext"
 
 const Footer = () => {
+  const { company, footer, social } = useAppContext()
+
   return (
     <footer className="relative bg-gradient-to-br from-white via-gray-100 to-emerald-50 text-gray-900 overflow-hidden">
       {/* Background SVG Pattern */}
       <div className="absolute inset-0 opacity-10">
-        <svg
-          className="absolute inset-0 w-full h-full"
-          viewBox="0 0 1000 1000"
-          xmlns="http://www.w3.org/2000/svg"
-        >
+        <svg className="absolute inset-0 w-full h-full" viewBox="0 0 1000 1000" xmlns="http://www.w3.org/2000/svg">
           <defs>
-            <pattern
-              id="grid"
-              width="50"
-              height="50"
-              patternUnits="userSpaceOnUse"
-            >
-              <path
-                d="M 50 0 L 0 0 0 50"
-                fill="none"
-                stroke="rgba(16, 185, 129, 0.3)"
-                strokeWidth="1"
-              />
+            <pattern id="grid" width="50" height="50" patternUnits="userSpaceOnUse">
+              <path d="M 50 0 L 0 0 0 50" fill="none" stroke="rgba(16, 185, 129, 0.3)" strokeWidth="1" />
             </pattern>
           </defs>
           <rect width="100%" height="100%" fill="url(#grid)" />
@@ -42,11 +22,7 @@ const Footer = () => {
 
       {/* Animated wave effect */}
       <div className="absolute top-0 left-0 w-full overflow-hidden">
-        <svg
-          className="relative block w-full h-20"
-          viewBox="0 0 1200 120"
-          preserveAspectRatio="none"
-        >
+        <svg className="relative block w-full h-20" viewBox="0 0 1200 120" preserveAspectRatio="none">
           <path
             d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z"
             fill="rgba(16, 185, 129, 0.1)"
@@ -68,17 +44,15 @@ const Footer = () => {
                 <div className="inline-flex items-center justify-center w-16 h-16 bg-white/20 rounded-2xl mb-4 mx-auto">
                   <Briefcase className="w-8 h-8 text-green-100" />
                 </div>
-                <h3 className="font-bold text-3xl mb-2 text-white tracking-wider">
-                  MLD
-                </h3>
-                <h4 className="font-semibold text-lg mb-4 text-emerald-100">
-                  Molad e Konsult
-                </h4>
+                <h3 className="font-bold text-3xl mb-2 text-white tracking-wider">{company.fullName}</h3>
+                <h4 className="font-semibold text-lg mb-4 text-emerald-100">{company.subtitle}</h4>
                 <div className="flex items-center justify-center gap-2 text-sm text-emerald-100">
                   <MapPin className="w-5 h-5 flex-shrink-0" />
                   <div className="text-left">
-                    <p className="font-medium">Ilo Awela, Ota</p>
-                    <p className="opacity-90">Ogun State, Nigeria</p>
+                    <p className="font-medium">{company.address.street}</p>
+                    <p className="opacity-90">
+                      {company.address.state}, {company.address.country}
+                    </p>
                   </div>
                 </div>
               </div>
@@ -89,7 +63,7 @@ const Footer = () => {
           <div className="flex  h-full justify-between">
             <div>
               <h6 className="text-xl font-bold mb-6 text-black relative pb-2">
-                Get In Touch
+                {footer.sections.contact.title}
                 <div className="absolute bottom-0 left-0 w-12 h-1 bg-gradient-to-r from-emerald-400 to-blue-400 rounded-full"></div>
               </h6>
 
@@ -101,7 +75,7 @@ const Footer = () => {
                   </div>
                   <div>
                     <div className="text-md text-gray-400">Email</div>
-                    <span className="text-md">info@moladekonsult.com</span>
+                    <span className="text-md">{company.email}</span>
                   </div>
                 </div>
 
@@ -111,7 +85,7 @@ const Footer = () => {
                   </div>
                   <div>
                     <div className="text-md text-gray-400">Phone</div>
-                    <span className="text-md">+234 (0) 123 456 7890</span>
+                    <span className="text-md">{company.phone}</span>
                   </div>
                 </div>
               </div>
@@ -120,7 +94,7 @@ const Footer = () => {
             {/* Social Media */}
             <div>
               <h6 className="text-xl font-bold mb-6 text-black relative pb-2">
-                Follow Our Journey
+                {footer.sections.social.title}
                 <div className="absolute bottom-0 left-0 w-12 h-1 bg-gradient-to-r from-emerald-400 to-blue-400 rounded-full"></div>
               </h6>
 
@@ -129,26 +103,33 @@ const Footer = () => {
                   {
                     icon: Facebook,
                     color: "hover:bg-blue-600 hover:text-white",
+                    href: social.facebook,
                   },
                   {
                     icon: Twitter,
                     color: "hover:bg-sky-500 hover:text-white",
+                    href: social.twitter,
                   },
                   {
                     icon: Linkedin,
                     color: "hover:bg-blue-700 hover:text-white",
+                    href: social.linkedin,
                   },
                   {
                     icon: Instagram,
                     color: "hover:bg-pink-600 hover:text-white",
+                    href: social.instagram,
                   },
                 ].map((social, index) => (
-                  <button
+                  <a
                     key={index}
+                    href={social.href}
+                    target="_blank"
+                    rel="noreferrer"
                     className={`w-12 h-12 bg-green-100/50 ${social.color} rounded-xl flex items-center justify-center transition-colors border border-slate-600/50 group`}
                   >
                     <social.icon className="w-5 h-5 text-slate-600 group-hover:text-white" />
-                  </button>
+                  </a>
                 ))}
               </div>
             </div>
@@ -160,24 +141,16 @@ const Footer = () => {
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <div className="text-center md:text-left">
               <p className="text-gray-400 text-xs md:text-sm">
-                © {new Date().getFullYear()} Molad e Konsult. All rights
-                reserved.
+                © {new Date().getFullYear()} {footer.legal.copyright}
               </p>
             </div>
 
             <div className="flex gap-4 text-xs md:text-sm">
-              <a
-                href="#"
-                className="text-gray-400 hover:text-emerald-400 transition-colors"
-              >
-                Privacy Policy
-              </a>
-              <a
-                href="#"
-                className="text-gray-400 hover:text-emerald-400 transition-colors"
-              >
-                Terms of Service
-              </a>
+              {footer.legal.links.map((link, index) => (
+                <a key={index} href={link.href} className="text-gray-400 hover:text-emerald-400 transition-colors">
+                  {link.name}
+                </a>
+              ))}
             </div>
           </div>
         </div>
@@ -185,11 +158,7 @@ const Footer = () => {
 
       {/* Bottom decorative wave */}
       <div className="absolute bottom-0 left-0 w-full overflow-hidden rotate-180">
-        <svg
-          className="relative block w-full h-12"
-          viewBox="0 0 1200 120"
-          preserveAspectRatio="none"
-        >
+        <svg className="relative block w-full h-12" viewBox="0 0 1200 120" preserveAspectRatio="none">
           <path
             d="M985.66,92.83C906.67,72,823.78,31,743.84,14.19c-82.26-17.34-168.06-16.33-250.45.39-57.84,11.73-114,31.07-172,41.86A600.21,600.21,0,0,1,0,27.35V120H1200V95.8C1132.19,118.92,1055.71,111.31,985.66,92.83Z"
             fill="rgba(16, 185, 129, 0.05)"
@@ -197,7 +166,7 @@ const Footer = () => {
         </svg>
       </div>
     </footer>
-  );
-};
+  )
+}
 
-export default Footer;
+export default Footer

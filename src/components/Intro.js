@@ -1,9 +1,10 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import { introBot, introBotDetail, introBotFooter } from "../utilities/Data";
-import { ArrowRight, Sparkles } from "lucide-react";
+import { Link } from "react-router-dom"
+import { useAppContext } from "../context/AppContext"
+import { ArrowRight, Sparkles } from "lucide-react"
 
 const Intro = () => {
+  const { content, images } = useAppContext()
+
   return (
     <div id="about" className="py-16 md:py-24 ">
       <section className="">
@@ -17,7 +18,7 @@ const Intro = () => {
                   <img
                     alt="AI-powered ordering system dashboard"
                     className="w-full h-auto object-cover transition-transform duration-500 group-hover:scale-105"
-                    src="/images/landing_image.jpg"
+                    src={images.landing || "/placeholder.svg"}
                   />
                   <div className="absolute bottom-4 left-4 bg-white/90 backdrop-blur-sm text-emerald-700 px-3 py-1 rounded-lg text-sm font-semibold shadow-sm">
                     <Sparkles className="inline mr-1 w-4 h-4" />
@@ -28,10 +29,7 @@ const Intro = () => {
             </div>
 
             {/* Text Content - Now on the right side */}
-            <div
-              className="lg:w-1/2 order-2 space-y-6 lg:space-y-8"
-              data-aos="zoom-in"
-            >
+            <div className="lg:w-1/2 order-2 space-y-6 lg:space-y-8" data-aos="zoom-in">
               {/* Badge */}
               <div className="inline-flex items-center gap-2 bg-gradient-to-r from-emerald-500/10 to-blue-500/10 border border-emerald-200 rounded-full px-4 py-1.5 text-sm font-medium text-emerald-700">
                 <Sparkles className="w-4 h-4" />
@@ -40,17 +38,13 @@ const Intro = () => {
 
               {/* Main Heading */}
               <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-slate-900 via-blue-900 to-emerald-900 bg-clip-text text-transparent leading-tight">
-                {introBot}
+                {content.intro.bot}
               </h1>
 
               {/* Description */}
               <div className="space-y-4">
-                <p className="text-lg md:text-xl text-slate-600 leading-relaxed">
-                  {introBotDetail}
-                </p>
-                <p className="text-lg text-slate-500 leading-relaxed">
-                  {introBotFooter}
-                </p>
+                <p className="text-lg md:text-xl text-slate-600 leading-relaxed">{content.intro.botDetail}</p>
+                <p className="text-lg text-slate-500 leading-relaxed">{content.intro.botFooter}</p>
               </div>
 
               {/* CTA Button */}
@@ -79,7 +73,7 @@ const Intro = () => {
         </div>
       </section>
     </div>
-  );
-};
+  )
+}
 
-export default Intro;
+export default Intro

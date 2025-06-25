@@ -1,23 +1,26 @@
-import React, { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
-import NavLinks from "../Navbar/NavLinks";
-import { HashLink } from "react-router-hash-link";
-import { companyName } from "../../utilities/Constants";
+"use client"
+
+import { useState, useEffect } from "react"
+import { useLocation } from "react-router-dom"
+import NavLinks from "../Navbar/NavLinks"
+import { HashLink } from "react-router-hash-link"
+import { useAppContext } from "../../context/AppContext"
 
 const NavBar = () => {
-  const [top, setTop] = useState(true);
-  const [isOpen, setisOpen] = useState(false);
-  const location = useLocation();
+  const [top, setTop] = useState(true)
+  const [isOpen, setisOpen] = useState(false)
+  const location = useLocation()
+  const { company } = useAppContext()
 
-  const isContactPage = location.pathname === "/contact";
+  const isContactPage = location.pathname === "/contact"
 
   useEffect(() => {
     const scrollHandler = () => {
-      window.pageYOffset > 10 ? setTop(false) : setTop(true);
-    };
-    window.addEventListener("scroll", scrollHandler);
-    return () => window.removeEventListener("scroll", scrollHandler);
-  }, []);
+      window.pageYOffset > 10 ? setTop(false) : setTop(true)
+    }
+    window.addEventListener("scroll", scrollHandler)
+    return () => window.removeEventListener("scroll", scrollHandler)
+  }, [])
 
   return (
     <nav
@@ -25,8 +28,8 @@ const NavBar = () => {
         !top
           ? "bg-white/20 shadow-lg backdrop-blur-md backdrop-saturate-150 text-gray-900"
           : isContactPage
-          ? "text-black"
-          : "text-white"
+            ? "text-black"
+            : "text-white"
       }`}
     >
       <div className="flex flex-row justify-between items-center py-2">
@@ -37,30 +40,22 @@ const NavBar = () => {
                 !top
                   ? "text-gray-900 hover:text-primary"
                   : isContactPage
-                  ? "text-black hover:text-primary"
-                  : "text-white hover:text-primary"
+                    ? "text-black hover:text-primary"
+                    : "text-white hover:text-primary"
               }`}
             >
-              {companyName}
+              {company.name}
             </h1>
           </HashLink>
         </div>
         <div className="group flex flex-col items-center">
           <button
             className={`p-2 rounded-lg lg:hidden transition duration-300 ease-in-out ${
-              !top
-                ? "text-gray-900"
-                : isContactPage
-                ? "text-black"
-                : "text-primary"
+              !top ? "text-gray-900" : isContactPage ? "text-black" : "text-primary"
             }`}
             onClick={() => setisOpen(!isOpen)}
           >
-            <svg
-              className="h-6 w-6 fill-current"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-            >
+            <svg className="h-6 w-6 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
               {isOpen ? (
                 <path
                   fillRule="evenodd"
@@ -90,7 +85,7 @@ const NavBar = () => {
         </div>
       </div>
     </nav>
-  );
-};
+  )
+}
 
-export default NavBar;
+export default NavBar
