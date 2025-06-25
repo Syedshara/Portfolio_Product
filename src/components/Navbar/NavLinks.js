@@ -1,47 +1,44 @@
 import React from "react";
 import { HashLink } from "react-router-hash-link";
+import { useLocation } from "react-router-dom";
 
 const NavLinks = ({ scrolled }) => {
+  const location = useLocation();
+  const isContactPage = location.pathname === "/contact";
+
+  const baseLinkClass = `px-4 font-extrabold transition duration-300 ease-in-out`;
+
+  const getTextColor = () => {
+    if (scrolled) return "text-gray-900 hover:text-primary";
+    if (isContactPage) return "text-black hover:text-primary";
+    return "text-gray-200 hover:text-primary";
+  };
+
   return (
     <>
       <HashLink
-        className={`px-4 font-extrabold transition duration-300 ease-in-out ${
-          scrolled
-            ? "text-gray-900 hover:text-primary"
-            : "text-gray-200 hover:text-primary"
-        }`}
+        className={`${baseLinkClass} ${getTextColor()}`}
         smooth
         to="/#about"
       >
         About
       </HashLink>
       <HashLink
-        className={`px-4 font-extrabold transition duration-300 ease-in-out ${
-          scrolled
-            ? "text-gray-900 hover:text-primary"
-            : "text-gray-200 hover:text-primary"
-        }`}
+        className={`${baseLinkClass} ${getTextColor()}`}
         smooth
         to="/#services"
       >
         Services
       </HashLink>
       <HashLink
-        className={`px-4 font-extrabold transition duration-300 ease-in-out ${
-          scrolled
-            ? "text-gray-900 hover:text-primary"
-            : "text-gray-200 hover:text-primary"
-        }`}
-        to="/"
+        className={`${baseLinkClass} ${getTextColor()}`}
+        smooth
+        to="/#portfolio"
       >
-        Portfolio
+        Products
       </HashLink>
       <HashLink
-        className={`px-4 font-extrabold transition duration-300 ease-in-out ${
-          scrolled
-            ? "text-gray-900 hover:text-primary"
-            : "text-gray-200 hover:text-primary"
-        }`}
+        className={`${baseLinkClass} ${getTextColor()}`}
         to="/contact#contact"
       >
         Contact Us

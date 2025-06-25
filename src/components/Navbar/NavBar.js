@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import NavLinks from "../Navbar/NavLinks";
 import { HashLink } from "react-router-hash-link";
 import { companyName } from "../../utilities/Constants";
 
 const NavBar = () => {
   const [top, setTop] = useState(true);
-  const [isOpen, setisOpen] = React.useState(false);
+  const [isOpen, setisOpen] = useState(false);
+  const location = useLocation();
 
-  function handleClick() {
-    setisOpen(!isOpen);
-  }
+  const isContactPage = location.pathname === "/contact";
 
   useEffect(() => {
     const scrollHandler = () => {
@@ -24,6 +24,8 @@ const NavBar = () => {
       className={`fixed top-0 w-full z-30 transition duration-300 ease-in-out mb-16 ${
         !top
           ? "bg-white/20 shadow-lg backdrop-blur-md backdrop-saturate-150 text-gray-900"
+          : isContactPage
+          ? "text-black"
           : "text-white"
       }`}
     >
@@ -34,6 +36,8 @@ const NavBar = () => {
               className={`font-extrabold text-4xl transition duration-300 ease-in-out ${
                 !top
                   ? "text-gray-900 hover:text-primary"
+                  : isContactPage
+                  ? "text-black hover:text-primary"
                   : "text-white hover:text-primary"
               }`}
             >
@@ -44,23 +48,26 @@ const NavBar = () => {
         <div className="group flex flex-col items-center">
           <button
             className={`p-2 rounded-lg lg:hidden transition duration-300 ease-in-out ${
-              !top ? "text-gray-900" : "text-primary"
+              !top
+                ? "text-gray-900"
+                : isContactPage
+                ? "text-black"
+                : "text-primary"
             }`}
-            onClick={handleClick}
+            onClick={() => setisOpen(!isOpen)}
           >
             <svg
               className="h-6 w-6 fill-current"
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
             >
-              {isOpen && (
+              {isOpen ? (
                 <path
                   fillRule="evenodd"
                   clipRule="evenodd"
                   d="M18.278 16.864a1 1 0 0 1-1.414 1.414l-4.829-4.828-4.828 4.828a1 1 0 0 1-1.414-1.414l4.828-4.829-4.828-4.828a1 1 0 0 1 1.414-1.414l4.829 4.828 4.828-4.828a1 1 0 1 1 1.414 1.414l-4.828 4.829 4.828 4.828z"
                 />
-              )}
-              {!isOpen && (
+              ) : (
                 <path
                   fillRule="evenodd"
                   d="M4 5h16a1 1 0 0 1 0 2H4a1 1 0 1 1 0-2zm0 6h16a1 1 0 0 1 0 2H4a1 1 0 0 1 0-2zm0 6h16a1 1 0 0 1 0 2H4a1 1 0 0 1 0-2z"
@@ -71,7 +78,6 @@ const NavBar = () => {
           <div className="hidden space-x-6 lg:inline-block p-5">
             <NavLinks scrolled={!top} />
           </div>
-
           <div
             className={`fixed transition-transform duration-300 ease-in-out transit flex justify-center left-0 w-full h-auto rounded-md p-24 bg-white lg:hidden shadow-xl top-14 ${
               isOpen ? "block" : "hidden"

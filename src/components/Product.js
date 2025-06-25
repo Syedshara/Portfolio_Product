@@ -112,7 +112,7 @@ const Products = () => {
         >
           <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
             Our{" "}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-500 to-emerald-600">
+            <span className="bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">
               Products
             </span>
           </h2>

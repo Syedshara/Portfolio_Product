@@ -3,15 +3,11 @@ import kws from "../images/clients/kws.png";
 import geps from "../images/clients/geps.png";
 import protergia from "../images/clients/protergia.png";
 
-const clientImage = {
-  height: "10rem",
-  width: "auto",
-  mixBlendMode: "colorBurn",
-};
-
 const Clients = () => {
   return (
-    <div className=" py-20">
+    <div className="py-20 relative z-0">
+      {" "}
+      {/* Added z-0 here to establish stacking context */}
       <section data-aos="fade-up">
         <div className="max-w-6xl mx-auto px-6">
           <div className="text-center mb-16">
@@ -30,8 +26,8 @@ const Clients = () => {
           </div>
 
           <div className="relative" data-aos="fade-in" data-aos-delay="600">
-            {/* Floating background shapes */}
-            <div className="absolute inset-0 overflow-hidden pointer-events-none">
+            {/* Floating background shapes - reduced z-index */}
+            <div className="absolute inset-0 overflow-hidden pointer-events-none -z-10">
               <div className="absolute top-10 left-10 w-32 h-32 bg-green-100 rounded-full opacity-20 animate-pulse"></div>
               <div
                 className="absolute top-32 right-20 w-24 h-24 bg-emerald-100 rounded-full opacity-30 animate-pulse"
@@ -45,6 +41,7 @@ const Clients = () => {
 
             <div className="relative z-10 flex justify-center items-center">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-16 items-center">
+                {/* Client cards remain the same */}
                 {/* Client 1 */}
                 <div className="group relative">
                   <div className="absolute inset-0 bg-gradient-to-br from-green-400 to-emerald-500 rounded-3xl blur-xl opacity-0 group-hover:opacity-20 transition-all duration-700"></div>
@@ -92,8 +89,8 @@ const Clients = () => {
               </div>
             </div>
 
-            {/* Connecting lines animation */}
-            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+            {/* Connecting lines animation - reduced z-index */}
+            <div className="absolute inset-0 flex items-center justify-center pointer-events-none -z-10">
               <svg
                 className="w-full h-full max-w-4xl opacity-10"
                 viewBox="0 0 800 200"
